@@ -9,7 +9,7 @@ contract DeployMyToken is Script {
     uint256 private constant INITIAL_SUPPLY = 1000 ether;
     function run() external returns (MyToken) {
         vm.startBroadcast();
-        MyToken myToken = new MyToken(INITIAL_SUPPLY);
+        MyToken myToken = new MyToken("MyToken", "MY", 8, 1000);
         vm.stopBroadcast();
         return myToken;
     }

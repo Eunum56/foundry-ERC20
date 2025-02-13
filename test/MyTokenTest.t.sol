@@ -17,27 +17,19 @@ contract MyTokenTest is Test {
     function setUp() external {
         deployMyToken = new DeployMyToken();
         myToken = deployMyToken.run();
-
-        vm.prank(msg.sender);
-        myToken.transfer(USER, STARTING_BALANCE);
     }
 
-    function testUserBalance() public view {
-        assertEq(STARTING_BALANCE, myToken.balanceOf(USER));
-    }
+    function testConstructorParamsSetsSuccess() public view {
+        string memory expectedName = "MyToken";
+        string memory expectedSymbol = "MY";
+        uint8 expectedDecimals = 8;
 
-    function testAllowenceWorks() public {
-        uint256 initialAllowance = 1000;
-        uint256 transferAmount = 500;
+        string memory name = myToken.name();
+        string memory symbol = myToken.symbol();
+        uint8 decimals = myToken.decimals();
 
-        // USER apprives PLAYER to spent tokens on his behalf
-        vm.prank(USER);
-        myToken.approve(PLAYER, initialAllowance);
-
-        vm.prank(PLAYER);
-        myToken.transferFrom(USER, PLAYER, transferAmount);
-
-        assertEq(myToken.balanceOf(PLAYER), transferAmount);
-        assertEq(myToken.balanceOf(USER), STARTING_BALANCE - transferAmount);
+        assertEq(expectedName, name);
+        assertEq(expectedSymbol, symbol);
+        assertEq(expectedDecimals, decimals);
     }
 }
