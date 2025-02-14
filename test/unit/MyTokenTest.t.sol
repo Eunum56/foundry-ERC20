@@ -39,7 +39,6 @@ contract MyTokenTest is Test {
     function testConstructorRevertsMaxSupplyReverts() public {
         vm.expectRevert(MyToken.MyToken__MaxSupplyExceeds.selector);
         MyToken localMyToken = new MyToken("MyToken", "MY", 8, 1_000_000_0 * 10 ** 18);
-        console.log(localMyToken.balanceOf(address(this)));
     }
 
     function testConstructorEmitAndSetsOwnerAndBalance() public {
