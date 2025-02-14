@@ -45,11 +45,7 @@ contract MyToken {
 
     // EVENTS
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(
-        address indexed _owner,
-        address indexed _spender,
-        uint256 _value
-    );
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     // MODIFIER
     modifier onlyOwner() {
@@ -58,12 +54,7 @@ contract MyToken {
     }
 
     // FUNCTIONS
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        uint8 _decimals,
-        uint256 _initialSupply
-    ) {
+    constructor(string memory _name, string memory _symbol, uint8 _decimals, uint256 _initialSupply) {
         require(_initialSupply <= MAX_SUPPLY, MyToken__MaxSupplyExceeds());
         s_name = _name;
         s_symbol = _symbol;
@@ -75,10 +66,7 @@ contract MyToken {
     }
 
     function mint(address _minter, uint256 _value) external onlyOwner {
-        require(
-            _value + s_totalSupply <= MAX_SUPPLY,
-            MyToken__MaxSupplyExceeds()
-        );
+        require(_value + s_totalSupply <= MAX_SUPPLY, MyToken__MaxSupplyExceeds());
         require(_minter != address(0), MyToken__InvalidAddress());
         s_balances[_minter] += _value;
         s_totalSupply += _value;
@@ -108,15 +96,8 @@ contract MyToken {
         return true;
     }
 
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _value
-    ) public returns (bool) {
-        require(
-            _from != address(0) && _to != address(0),
-            MyToken__InvalidAddress()
-        );
+    function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
+        require(_from != address(0) && _to != address(0), MyToken__InvalidAddress());
         uint256 remaningAllowance = s_allowed[_from][msg.sender];
         require(remaningAllowance >= _value, MyToken__AllowanceExceeds());
         require(s_balances[_from] >= _value, MyToken__NotEnoughTokens());
@@ -127,25 +108,16 @@ contract MyToken {
         return true;
     }
 
-    function increaseAllowance(
-        address _spender,
-        uint256 _value
-    ) public returns (bool) {
+    function increaseAllowance(address _spender, uint256 _value) public returns (bool) {
         require(address(0) != _spender, MyToken__InvalidAddress());
         s_allowed[msg.sender][_spender] += _value;
         emit Approval(msg.sender, _spender, s_allowed[msg.sender][_spender]);
         return true;
     }
 
-    function decreaseAllowance(
-        address _spender,
-        uint256 _value
-    ) public returns (bool) {
+    function decreaseAllowance(address _spender, uint256 _value) public returns (bool) {
         require(address(0) != _spender, MyToken__InvalidAddress());
-        require(
-            s_allowed[msg.sender][_spender] >= _value,
-            MyToken__NotEnoughAllowance()
-        );
+        require(s_allowed[msg.sender][_spender] >= _value, MyToken__NotEnoughAllowance());
         s_allowed[msg.sender][_spender] -= _value;
         emit Approval(msg.sender, _spender, s_allowed[msg.sender][_spender]);
         return true;
@@ -172,10 +144,7 @@ contract MyToken {
         return s_balances[_owner];
     }
 
-    function allowance(
-        address _owner,
-        address _spender
-    ) public view returns (uint256) {
+    function allowance(address _owner, address _spender) public view returns (uint256) {
         return s_allowed[_owner][_spender];
     }
 

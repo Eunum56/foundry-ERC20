@@ -14,11 +14,7 @@ contract MyTokenTest is Test {
 
     // EVENTS
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
-    event Approval(
-        address indexed _owner,
-        address indexed _spender,
-        uint256 _value
-    );
+    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     function setUp() external {
         vm.prank(OWNER);
@@ -42,12 +38,8 @@ contract MyTokenTest is Test {
 
     function testConstructorRevertsMaxSupplyReverts() public {
         vm.expectRevert(MyToken.MyToken__MaxSupplyExceeds.selector);
-        MyToken localMyToken = new MyToken(
-            "MyToken",
-            "MY",
-            8,
-            1_000_000_0 * 10 ** 18
-        );
+        MyToken localMyToken = new MyToken("MyToken", "MY", 8, 1_000_000_0 * 10 ** 18);
+        console.log(localMyToken.balanceOf(address(this)));
     }
 
     function testConstructorEmitAndSetsOwnerAndBalance() public {
