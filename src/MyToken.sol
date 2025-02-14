@@ -113,12 +113,12 @@ contract MyToken {
         address _to,
         uint256 _value
     ) public returns (bool) {
-        uint256 remanningAllowance = s_allowed[_from][msg.sender];
-        require(remanningAllowance >= _value, MyToken__AllowanceExceeds());
         require(
             _from != address(0) && _to != address(0),
             MyToken__InvalidAddress()
         );
+        uint256 remaningAllowance = s_allowed[_from][msg.sender];
+        require(remaningAllowance >= _value, MyToken__AllowanceExceeds());
         require(s_balances[_from] >= _value, MyToken__NotEnoughTokens());
         s_balances[_from] -= _value;
         s_balances[_to] += _value;
@@ -152,23 +152,23 @@ contract MyToken {
     }
 
     // GETTERS / VIEW OR PURE FUNCTIONS
-    function name() public view returns (string memory) {
+    function name() external view returns (string memory) {
         return s_name;
     }
 
-    function symbol() public view returns (string memory) {
+    function symbol() external view returns (string memory) {
         return s_symbol;
     }
 
-    function decimals() public view returns (uint8) {
+    function decimals() external view returns (uint8) {
         return i_decimals;
     }
 
-    function totalSupply() public view returns (uint256) {
+    function totalSupply() external view returns (uint256) {
         return s_totalSupply;
     }
 
-    function balanceOf(address _owner) public view returns (uint256) {
+    function balanceOf(address _owner) external view returns (uint256) {
         return s_balances[_owner];
     }
 
@@ -177,5 +177,9 @@ contract MyToken {
         address _spender
     ) public view returns (uint256) {
         return s_allowed[_owner][_spender];
+    }
+
+    function getOwner() external view returns (address) {
+        return i_owner;
     }
 }
